@@ -59,14 +59,13 @@
   services.xserver = {
     enable = true;
     desktopManager = {
-      xterm.enable = false;
+     #xterm.enable = false;
       xfce.enable = true;
     };
     displayManager.defaultSession = "xfce";
     dpi = 70;
     #   windowManager.xmonad = {
-    #      enable = true;
-    #      enableContribAndExtras = true;
+    #      enable = true; enableContribAndExtras = true;
     #      extraPackages = hpkgs: [
     #        #hpkgs.xmobar
     #        hpkgs.dbus
@@ -124,8 +123,9 @@
   users.extraGroups.docker.members = [ "honey" ];
 
   virtualisation.docker.enable = true;
-
-  # Install firefox. programs.firefox.enable = true;
+  virtualisation.docker.daemon.settings = {
+    "registry-mirrors" = [ "https://mirror.gcr.io" ];
+  };  # Install firefox. programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -133,7 +133,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    xfce.xfce4-xkb-plugin
+    # xfce.xfce4-xkb-plugin
+
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
@@ -171,5 +172,24 @@
   fonts.fonts = with pkgs; [
     comic-relief
     font-awesome_4
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
 ];
+
+programs.steam = {
+  enable = true;
+  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+};
+
+
+users.defaultUserShell = pkgs.zsh;
+programs.zsh.enable = true;
 }

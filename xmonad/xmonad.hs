@@ -66,7 +66,7 @@ myLauncher = "rofi -show"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1: terms","2: web","3: code","4: messenger", "5: systools"] ++ map show [5..9]
+myWorkspaces = ["1: terms","2: web","3: code","4: messenger", "5: systools"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -485,7 +485,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- By default, do nothing.
 myStartupHook = do
   setWMName "LG3D"
-  spawn     "bash ~/.xmonad/startup.sh"
+  spawn     "feh --bg-fill  /home/honey/Pictures/wallhaven-r2pq31.jpg"
   setDefaultCursor xC_left_ptr
 
 

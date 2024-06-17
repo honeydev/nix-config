@@ -106,16 +106,37 @@
     telegram-desktop
     flatpak
     gnome.gnome-software
-    tmux
+    # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
+    mattermost-desktop
+    citrix_workspace
+    firefox
+    openconnect
+    keepassxc
+    bluetuith
+    httpie
+    httpie-desktop
+    obsidian
+    xarchiver
+    yandex-disk
+    arandr
+    feh
+    spotify
+    thefuck
+    discord
+    lazygit
+    evince
+    metals
+    coursier
+    jdk8
 ];
 
 
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    # userName = "aslebedev";
+    # userName = "easlebedev";
     # userEmail = "xiaoyin_c@qq.com";
   };
 
@@ -141,11 +162,9 @@
       env.TERM = "xterm-256color";
       font = {
         size = 12;
-        draw_bold_text_with_bright_colors = true;
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      log_level = "Off";
     };
   };
     
@@ -159,6 +178,7 @@
      shellAliases = {
        ll = "ls -l";
        update = "sudo nixos-rebuild switch";
+       ra = "ranger";
      };
      # histSize = 10000;
      # histFile = "${config.xdg.dataHome}/zsh/history";
@@ -168,22 +188,22 @@
         theme = "mortalscumbag";
         };
     };
-   # programs.bash = {
-   #   enable = true;
-   #   enableCompletion = true;
-   #   # TODO add your custom bashrc here
-   #   bashrcExtra = ''
-   #     export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
-   #   '';
+   programs.bash = {
+     enable = true;
+     enableCompletion = true;
+     # TODO add your custom bashrc here
+     bashrcExtra = ''
+       export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
+     '';
 
-   #   # set some aliases, feel free to add more or remove some
-   #   shellAliases = {
-   #     k = "kubectl";
-   #     r = "ranger";
-   #     urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
-   #     urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
-   #   };
-   # };
+     # set some aliases, feel free to add more or remove some
+     shellAliases = {
+       k = "kubectl";
+       r = "ranger";
+       urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
+       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
+     };
+   };
 
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -212,9 +232,15 @@
        ];
        config = ./xmonad/xmonad.hs;
      };
-
   };
-  #users.defaultUserShell = pkgs.zsh;
  
+ programs.tmux = {
+  enable = true;
+  clock24 = true;
+  extraConfig = '' 
+set -g status-right '#[fg=black,bg=color15] #{cpu_percentage}  %H:%M '
+    run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux
+    '';
+  };
 }
 
