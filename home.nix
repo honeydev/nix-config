@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, lib, ... }:
+let 
+    secured = import ./secured.nix;
+
+in {
   # TODO please change the username & home directory to your own
   home.username = "honey";
   home.homeDirectory = "/home/honey";
@@ -172,14 +175,17 @@
    programs.zsh = {
      enable = true;
      enableCompletion = true;
-    # autosuggestions.enable = true;
      syntaxHighlighting.enable = true;
    
-     shellAliases = {
-       ll = "ls -l";
-       update = "sudo nixos-rebuild switch";
-       ra = "ranger";
-     };
+     shellAliases = lib.mkMerge [
+        {
+          ll = "ls -l";
+          update = "sudo nixos-rebuild switch";
+          ra = "ranger";
+          kvantera = secured.shellAliases.kvantera;
+        }
+        secured.shellAliases
+     ];
      # histSize = 10000;
      # histFile = "${config.xdg.dataHome}/zsh/history";
      oh-my-zsh = {
@@ -202,7 +208,7 @@
        r = "ranger";
        urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
        urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
-     };
+             };
    };
 
   # This value determines the home Manager release that your
