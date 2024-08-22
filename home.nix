@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let 
-    secured = import ./secured.nix;
+    secured = import "${builtins.getEnv "PWD"}/secured.nix";
 
 in {
   # TODO please change the username & home directory to your own
@@ -101,7 +101,7 @@ in {
     gnumake
     ranger
     htop
-    neovim
+    # neovim
     xmobar
     rofi
     j4-dmenu-desktop
@@ -112,9 +112,11 @@ in {
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
+    # jetbrains.rust-rover
     mattermost-desktop
     citrix_workspace
     firefox
+    simplescreenrecorder
     openconnect
     keepassxc
     bluetuith
@@ -130,9 +132,22 @@ in {
     discord
     lazygit
     evince
-    metals
-    coursier
-    jdk8
+    dive # look into docker image layers
+    # podman-tui # status of containers in the terminal
+    podman-compose # start group of containers for dev
+    hakuneko
+    protonvpn-gui
+    racket
+    postman
+    evolution
+    evolution-ews
+#    wireguard
+    wireguard-tools
+    xfce.xfce4-screenshooter
+    xfce.thunar
+    thunderbird
+    twmn
+    nerdfonts
 ];
 
 
@@ -168,6 +183,7 @@ in {
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
+      window.opacity = 0.6;
     };
   };
     
@@ -183,6 +199,7 @@ in {
           update = "sudo nixos-rebuild switch";
           ra = "ranger";
           kvantera = secured.shellAliases.kvantera;
+          avi = "NVIM_APPNAME=astronvim nvim";
         }
         secured.shellAliases
      ];
@@ -223,22 +240,22 @@ in {
 
   programs.home-manager.enable = true;
 
-   xsession = {
-     enable = true;
+  # xsession = {
+  #   enable = true;
 
-#     initExtra = extra + polybarOpts;
+# #  initExtra = extra + polybarOpts;
 
-     windowManager.xmonad = {
-       enable = true;
-       enableContribAndExtras = true;
-       extraPackages = hp: [
-         hp.xmobar
-         hp.dbus
-         hp.monad-logger
-       ];
-       config = ./xmonad/xmonad.hs;
-     };
-  };
+  #  windowManager.xmonad = {
+  #    enable = true;
+  #    enableContribAndExtras = true;
+  #    extraPackages = hp: [
+  #      hp.xmobar
+  #      hp.dbus
+  #      hp.monad-logger
+  #    ];
+  #    config = ./xmonad/xmonad.hs;
+  #  };
+  # };
  
  programs.tmux = {
   enable = true;
@@ -248,5 +265,15 @@ set -g status-right '#[fg=black,bg=color15] #{cpu_percentage}  %H:%M '
     run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux
     '';
   };
+  programs.vscode = {
+
+    enable = true;
+    package = pkgs.vscode.fhs;
+};
+
+ programs.neovim = {
+   enable = true;
+   extraConfig = lib.fileContents /home/honey/.config/nvim/init.vim;
+ };
 }
 

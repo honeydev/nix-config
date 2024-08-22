@@ -3,6 +3,10 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { config, pkgs, ... }:
 
+let 
+    secured = import "${builtins.getEnv "PWD"}/secured.nix";
+
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -22,7 +26,14 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
+#    networking.firewall = {
+#      allowedUDPPorts = [ 51820 ]; # Clients and peers can use the same port, see listenport
+#    };
+#  
+#    networking.wg-quick.interfaces = {
+#      wg0 = secured.wg_quick;
+#  
+#    };
   # bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
@@ -54,27 +65,41 @@
   };
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+# services.displayManager = {
+#    enable = true;
+#    execCmd = "${pkgs.lemurs}/bin/lemurs --no-log";
+#   defaultSession = "none+xmonad";
+# };
 
-  services.xserver = {
+services.xserver = {
+  enable = true;
+  desktopManager.xterm.enable = false;
+  # displayManager.defaultSession = "xfce";
+
+   displayManager.lightdm = {
     enable = true;
-    desktopManager = {
-     #xterm.enable = false;
-      xfce.enable = true;
-    };
-    displayManager.defaultSession = "xfce";
-    dpi = 70;
-    #   windowManager.xmonad = {
-    #      enable = true; enableContribAndExtras = true;
-    #      extraPackages = hpkgs: [
-    #        #hpkgs.xmobar
-    #        hpkgs.dbus
-    #        hpkgs.monad-logger
-    #  #     hpkgs.xmonad-screenshot
-    #      ];
-    #      config = builtins.readFile /home/honey/.xmonad/xmonad.hs;
-    #   };
+    greeter.enable = true;
+    greeters.mini.user = "honey";
+    background = "/home/honey/Pictures/wallhaven-x1ppyv.jpg";
+    autoLogin = { 
+        enable = true; 
+        user = "honey"; 
+      };
+
   };
+  dpi = 96;
+  windowManager.xmonad = {
+     enable = true;
+     enableContribAndExtras = true;
+     extraPackages = hpkgs: [
+       #hpkgs.xmobar
+       hpkgs.dbus
+       hpkgs.monad-logger
+      # hpkgs.xmonad-screenshot
+     ];
+     config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
+  };
+};
 
 
   # Enable the KDE Plasma Desktop Environment.
@@ -117,10 +142,44 @@
     description = "honey";
     extraGroups = [ "docker" "networkmanager" "wheel" ];
     packages = with pkgs; [
+        lemurs
     ];
   };
 
   users.extraGroups.docker.members = [ "honey" ];
+  users.extraGroups.vboxusers.members = [ "honey" ];
+
+
+#programs.evolution = {
+#  enable = true;
+#  plugins = [ pkgs.evolution-ews ];
+#};
+
+  virtualisation.containers.enable = true;
+  virtualisation = {
+   #  virtualbox = {
+   #      host.enable = true;
+   #      host.enableExtensionPack = true;
+   #  };
+   #  podman = {
+   #   enable = true;
+
+   #    # Create a `docker` alias for podman, to use it as a drop-in replacement
+   #    dockerCompat = true;
+
+   #    # Required for containers under podman-compose to be able to talk to each other.
+   #    defaultNetwork.settings.dns_enabled = true;
+   #  };
+  };
+
+  # virtualisation.oci-containers.backend = "podman";
+  # virtualisation.oci-containers.containers = {
+  #   container-name = {
+  #     image = "container-image";
+  #     autoStart = true;
+  #     ports = [ "127.0.0.1:1234:1234" ];
+  #   };
+  # };
 
   virtualisation.docker.enable = true;
   virtualisation.docker.daemon.settings = {
