@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ config, pkgs, ... }:
+{ deviceName, ... }: { config, pkgs, ... }:
 
 let 
     secured = import "${builtins.getEnv "PWD"}/secured.nix";
@@ -10,7 +10,7 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ../hardware-configuration.nix
     ];
 
   # Bootloader.
@@ -71,33 +71,38 @@ in
 #   defaultSession = "none+xmonad";
 # };
 
+services.displayManager.sddm.enable = true;
+services.desktopManager.plasma6.enable = true;
+
+
 services.xserver = {
   enable = true;
-  videoDrivers = [ "intel" ];
-  desktopManager.xterm.enable = false;
-   displayManager.lightdm = {
-    enable = true;
-    greeter.enable = true;
-    greeters.mini.user = "honey";
-    background = "/home/honey/Pictures/wallhaven-x1ppyv.jpg";
-    autoLogin = { 
-        enable = true; 
-        user = "honey"; 
-      };
+  # videoDrivers = [ "intel" ];
+  
+  # desktopManager.xterm.enable = false;
+  #  displayManager.lightdm = {
+  #   enable = true;
+  #   greeter.enable = true;
+  #   greeters.mini.user = "honey";
+  #   background = "/home/honey/Pictures/wallhaven-x1ppyv.jpg";
+  #   autoLogin = { 
+  #       enable = true; 
+  #       user = "honey"; 
+  #     };
 
-  };
-  dpi = 96;
-  windowManager.xmonad = {
-     enable = true;
-     enableContribAndExtras = true;
-     extraPackages = hpkgs: [
-       #hpkgs.xmobar
-       hpkgs.dbus
-       hpkgs.monad-logger
-      # hpkgs.xmonad-screenshot
-     ];
-     config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
-  };
+  # };
+  # dpi = 96;
+  # windowManager.xmonad = {
+  #    enable = true;
+  #    enableContribAndExtras = true;
+  #    extraPackages = hpkgs: [
+  #      #hpkgs.xmobar
+  #      hpkgs.dbus
+  #      hpkgs.monad-logger
+  #     # hpkgs.xmonad-screenshot
+  #    ];
+  #    config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
+  # };
 };
 
 

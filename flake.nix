@@ -1,6 +1,5 @@
 {
   description = "A very basic flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.05";
     # home-manager.url = "github:nix-community/home-manager";
@@ -13,7 +12,7 @@
     };
   };
 
-    outputs = { self, nixpkgs, home-manager }: {
+  outputs = { self, nixpkgs, home-manager }: {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
@@ -22,12 +21,27 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # TODO replace ryan with your own username
             home-manager.users.honey = import ./home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
           ];
     };
+
+    nixosConfigurations.t480skde = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ 
+          ( import ./configuration/kde.nix { deviceName = "t480s";  })
+          home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              # TODO replace ryan with your own username
+              home-manager.users.honey = import ./home/kde.nix;
+              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+            }
+            ];
+    };
+
   };
 }
 
