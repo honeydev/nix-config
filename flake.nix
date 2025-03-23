@@ -1,9 +1,9 @@
 {
   description = "A very basic flake";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.11";
     # home-manager.url = "github:nix-community/home-manager";
-    home-manager = { url = "github:nix-community/home-manager/release-24.05";
+    home-manager = { url = "github:nix-community/home-manager/release-24.11";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -28,8 +28,8 @@
     };
 
     nixosConfigurations.t480skde = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ 
+       system = "x86_64-linux";
+       modules = [ 
           ( import ./configuration/kde.nix { deviceName = "t480s";  })
           home-manager.nixosModules.home-manager
             {

@@ -38,7 +38,6 @@ import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
-
 ----------------------------mupdf--------------------------------------------
 -- Terminimport XMonad.Hooks.EwmhDesktopsal
 -- The preferred terminal program, which is used in a binding below and by
@@ -486,6 +485,9 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 myStartupHook = do
   setWMName "LG3D"
   spawn     "feh --bg-fill  /home/honey/Pictures/wallhaven-r2pq31.jpg"
+  spawn "deadd-notification-center"
+  spawn "xinput disable 9"
+  -- spawn "twmnd"
   setDefaultCursor xC_left_ptr
 
 
@@ -513,6 +515,8 @@ main = do
                 , ppOutput = hPutStrLn xmproc
          } >> updatePointer (0.75, 0.75) (0.75, 0.75)
       }
+
+
 
 ------------------------------------------------------------------------
 -- Combine it all together

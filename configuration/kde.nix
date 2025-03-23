@@ -1,6 +1,5 @@
 # Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# your system.  Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by running ‘nixos-help’).
 { deviceName, ... }: { config, pkgs, ... }:
 
 let 
@@ -19,6 +18,15 @@ in
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.nameservers = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+
+  services.resolved = {
+    enable = true;
+    # dnssec = "true";
+    # domains = [ "~." ];
+    # fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    # dnsovertls = "true";
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -26,14 +34,25 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
-#    networking.firewall = {
-#      allowedUDPPorts = [ 51820 ]; # Clients and peers can use the same port, see listenport
-#    };
-#  
-#    networking.wg-quick.interfaces = {
-#      wg0 = secured.wg_quick;
-#  
-#    };
+
+    networking.firewall = {
+      allowedUDPPorts = [ 51820 51821 ]; # Clients and peers can use the same port, see listenport
+    };
+
+    security.pki.certificateFiles = [
+        /home/honey/.mitmproxy/mitmproxy-ca.pem
+
+        /home/honey/.mitmproxy/mitmproxy-ca-cert.cer
+
+            
+        /home/honey/.mitmproxy/mitmproxy-ca-cert.pem
+        /home/honey/.mitmproxy/mitmproxy-dhparam.pem
+    ];
+  
+   #  networking.wg-quick.interfaces = {
+   #    wg0 = secured.wg_quick;
+  
+   #  };
   # bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
@@ -121,7 +140,7 @@ services.xserver = {
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -162,10 +181,12 @@ services.xserver = {
 
   virtualisation.containers.enable = true;
   virtualisation = {
-   #  virtualbox = {
-   #      host.enable = true;
-   #      host.enableExtensionPack = true;
-   #  };
+   virtualbox = {
+       host.enable = true;
+       host.enableExtensionPack = true;
+       guest.enable = true;
+       guest.dragAndDrop = true;
+   };
    #  podman = {
    #   enable = true;
 
@@ -237,7 +258,7 @@ services.xserver = {
     comic-relief
     font-awesome_4
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     fira-code
@@ -253,6 +274,10 @@ programs.steam = {
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 };
 
+programs.evolution = {
+    enable = true;
+    plugins = [ pkgs.evolution-ews ];
+};
 
 users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;

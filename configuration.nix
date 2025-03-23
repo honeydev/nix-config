@@ -5,7 +5,6 @@
 
 let 
     secured = import "${builtins.getEnv "PWD"}/secured.nix";
-
 in
 {
   imports =
@@ -26,6 +25,17 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  services.resolved = {
+    enable = true;
+    # dnssec = "true";
+    # domains = [ "~." ];
+    # fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    # dnsovertls = "true";
+  };
+
+
+#  networking.networkmanager.dns = "none";
+#  networking.nameservers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" ];
 #    networking.firewall = {
 #      allowedUDPPorts = [ 51820 ]; # Clients and peers can use the same port, see listenport
 #    };
@@ -71,9 +81,10 @@ in
 #   defaultSession = "none+xmonad";
 # };
 
+
 services.xserver = {
   enable = true;
-  videoDrivers = [ "intel" ];
+  # videoDrivers = [ "intel" ];
   desktopManager.xterm.enable = false;
    displayManager.lightdm = {
     enable = true;
@@ -91,7 +102,7 @@ services.xserver = {
      enable = true;
      enableContribAndExtras = true;
      extraPackages = hpkgs: [
-       #hpkgs.xmobar
+       hpkgs.xmonad-contrib
        hpkgs.dbus
        hpkgs.monad-logger
       # hpkgs.xmonad-screenshot
@@ -99,6 +110,23 @@ services.xserver = {
      config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
   };
 };
+
+
+location.provider = "geoclue2";
+
+services.redshift = {
+    enable = true;
+    brightness = {
+      # Note the string values below.
+      day = "1";
+      night = "1";
+    };
+    temperature = {
+      day = 5500;
+      night = 3700;
+    };
+};
+
 
 
   # Enable the KDE Plasma Desktop Environment.
@@ -116,7 +144,7 @@ services.xserver = {
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  #sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -143,6 +171,7 @@ services.xserver = {
     packages = with pkgs; [
         lemurs
         deadd-notification-center
+#        usnstable.amnezia-vpn
     ];
   };
 
@@ -156,21 +185,14 @@ services.xserver = {
 #};
 
   virtualisation.containers.enable = true;
-  virtualisation = {
-   #  virtualbox = {
-   #      host.enable = true;
-   #      host.enableExtensionPack = true;
-   #  };
-   #  podman = {
-   #   enable = true;
-
-   #    # Create a `docker` alias for podman, to use it as a drop-in replacement
-   #    dockerCompat = true;
-
-   #    # Required for containers under podman-compose to be able to talk to each other.
-   #    defaultNetwork.settings.dns_enabled = true;
-   #  };
-  };
+    virtualisation = {
+     virtualbox = {
+         host.enable = true;
+         host.enableExtensionPack = true;
+         guest.enable = true;
+         guest.dragAndDrop = true;
+     };
+};
 
   # virtualisation.oci-containers.backend = "podman";
   # virtualisation.oci-containers.containers = {
@@ -232,7 +254,7 @@ services.xserver = {
     comic-relief
     font-awesome_4
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     fira-code
@@ -252,13 +274,51 @@ programs.steam = {
 users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;
 
+programs.evolution = {
+    enable = true;
+    plugins = [ pkgs.evolution-ews ];
+};
+
+services.devmon.enable = true;
+services.gvfs.enable = true; 
+services.udisks2.enable = true;
+
+services.flatpak.enable = true;
+xdg.portal.enable = true;
+
+
 # systemd.services.myservice = {
 #   enable = true;
 #   after = [ "network.target" ];
 #   wantedBy = [ "multi-user.target" ];
-#   path = [ pkgs.deadd-notification-center ];
+#   path = [ pkgs.deadd-notification-center pkgs.twmn pkgs.xorg.xhost];
+#   environment = {
+#     DISPLAY = ":0";
+#     XAUTHORITY="/home/honey/.Xauthority";
+#     # XAUTHORITY = "/home/honey/.Xauthority";
+#     # XDG_SESSION_PATH= "/org/freedesktop/DisplayManager/Session0";
+#     DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus";
+# XDG_CURRENT_DESKTOP="none+xmonad";
+# XDG_DATA_DIRS="/nix/store/74j75jgxp3blmxd4rcscliy85jp9q3x7-desktops/share:/home/honey/.nix-profile/share:/nix/profile/share:/home/honey/.local/state/nix/profile/share:/etc/profiles/per-user/honey/share:/nix/var/nix/profiles/default/share:/run/current-system/sw/share";
+# XDG_GREETER_DATA_DIR="/var/lib/lightdm-data/honey";
+# XDG_RUNTIME_DIR="/run/user/1000";
+# XDG_SEAT="seat0";
+# XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat0";
+# XDG_SESSION_CLASS="user";
+# XDG_SESSION_DESKTOP="none+xmonad";
+# XDG_SESSION_ID="2";
+# XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session0";
+# XDG_SESSION_TYPE="x11";
+# XDG_VTNR="7";
+# XMONAD_XMESSAGE="/nix/store/scflw2sgh1wr1fic0d5mdd9j3zgffixp-xmessage-1.0.7/bin/xmessage";
+#    # k XDG_SESSION_ID="2";
+#   #   XDG_SESSION_TYPE="x11";
+#   #  XDG_RUNTIME_DIR="/run/user/100";
+#   };
 #   serviceConfig = {
-#      ExecStart = "deadd-notification-center";
+#      ExecStart = "${pkgs.twmn}/bin/twmnd";
+#      # ExecStart = "${pkgs.deadd-notification-center}/bin/deadd-notification-center";
+# 
 #    };
 # };
 }

@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let 
     secured = import "${builtins.getEnv "PWD"}/secured.nix";
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 
 in {
   # TODO please change the username & home directory to your own
@@ -59,7 +60,6 @@ in {
     ldns # replacement of `dig`, it provide the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat
-    nmap # A utility for network discovery and security auditing
     ipcalc  # it is a calculator for the IPv4/v6 addresses
 
     # misc
@@ -108,11 +108,10 @@ in {
     j4-dmenu-desktop
     xclip
     telegram-desktop
-    flatpak
-    gnome.gnome-software
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
+    jetbrains.idea-ultimate
     # jetbrains.rust-rover
     mattermost-desktop
     citrix_workspace
@@ -122,7 +121,6 @@ in {
     keepassxc
     bluetuith
     httpie
-    httpie-desktop
     obsidian
     xarchiver
     yandex-disk
@@ -137,11 +135,11 @@ in {
     # podman-tui # status of containers in the terminal
     podman-compose # start group of containers for dev
     hakuneko
-    protonvpn-gui
+    ##  protonvpn-gui
     racket
     postman
-    evolution
-    evolution-ews
+#    evolution
+#     evolution-ews
 #    wireguard
     wireguard-tools
     xfce.xfce4-screenshooter
@@ -150,7 +148,14 @@ in {
     twmn
     nerdfonts
     aws-workspaces
+    qbittorrent
+    inkscape
+    vlc
+    unstable.amnezia-vpn
+    jdk8
+    tuxguitar
 ];
+
 
 
   # basic configuration of git, please change to your own
@@ -159,6 +164,7 @@ in {
     # userName = "easlebedev";
     # userEmail = "xiaoyin_c@qq.com";
   };
+
 
   # starship - an customizable prompt for any shell
   programs.starship = {
@@ -178,7 +184,7 @@ in {
     enable = true;
       # custom settings
       settings = {
-      shell = "zsh";
+      terminal.shell = "zsh";
       env.TERM = "xterm-256color";
       font = {
         size = 12;

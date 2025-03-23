@@ -130,7 +130,7 @@ in {
     feh
     spotify
     thefuck
-    discord
+   # discord
     lazygit
     evince
     dive # look into docker image layers
@@ -140,9 +140,9 @@ in {
     protonvpn-gui
     racket
     postman
-    evolution
-    evolution-ews
-#    wireguard
+   #  evolution
+   #  evolution-ews
+
     wireguard-tools
     xfce.xfce4-screenshooter
     xfce.thunar
@@ -150,6 +150,9 @@ in {
     twmn
     nerdfonts
     aws-workspaces
+    qbittorrent
+    discord
+    mitmproxy
 ];
 
 
@@ -178,14 +181,14 @@ in {
     enable = true;
       # custom settings
       settings = {
-      shell = "zsh";
+      terminal.shell = "zsh";
       env.TERM = "xterm-256color";
       font = {
         size = 12;
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      window.opacity = 0.6;
+      window.opacity = 0.9;
     };
   };
     
