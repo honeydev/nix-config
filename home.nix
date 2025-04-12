@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let 
-    secured = import "${builtins.getEnv "PWD"}/secured.nix";
+#    secured = import "${builtins.getEnv "PWD"}/secured.nix";
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 
 in {
@@ -111,10 +111,10 @@ in {
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
-    jetbrains.idea-ultimate
+    # jetbrains.idea-ultimate
     # jetbrains.rust-rover
     mattermost-desktop
-    citrix_workspace
+    #citrix_workspace
     firefox
     simplescreenrecorder
     openconnect
@@ -128,7 +128,7 @@ in {
     feh
     spotify
     thefuck
-    discord
+    #discord
     lazygit
     evince
     dive # look into docker image layers
@@ -208,8 +208,6 @@ in {
           r = "ranger";
           # kvantera = secured.shellAliases.kvantera;
           avi = "NVIM_APPNAME=astronvim nvim";
-          kvantera = secured.aliases.kvantera;
-
         }
         # secured.shellAliases
      ];
@@ -235,7 +233,6 @@ in {
        r = "ranger";
        urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
        urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
-       kvantera = secured.aliases.kvantera;
        
     };
    };

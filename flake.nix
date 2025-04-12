@@ -13,6 +13,21 @@
   };
 
   outputs = { self, nixpkgs, home-manager }: {
+    nixosConfigurations.desktop-pc = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+      	./configuration/desktop-pc.nix
+	 home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.honey = import ./home.nix;
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+          ];
+    };
+
+
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 

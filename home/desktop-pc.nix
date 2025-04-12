@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let 
-    secured = import "${builtins.getEnv "PWD"}/secured.nix";
+#    secured = import "${builtins.getEnv "PWD"}/secured.nix";
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 
 in {
   # TODO please change the username & home directory to your own
@@ -59,7 +60,6 @@ in {
     ldns # replacement of `dig`, it provide the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat
-    nmap # A utility for network discovery and security auditing
     ipcalc  # it is a calculator for the IPv4/v6 addresses
 
     # misc
@@ -103,57 +103,50 @@ in {
     ranger
     htop
     # neovim
-    xmobar
-    rofi
-    j4-dmenu-desktop
     xclip
     telegram-desktop
-    flatpak
-    gnome.gnome-software
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
+    # jetbrains.idea-ultimate
     # jetbrains.rust-rover
     mattermost-desktop
-    citrix_workspace
+    #citrix_workspace
     firefox
     simplescreenrecorder
     openconnect
     keepassxc
-    bluetuith
-    httpie
-    httpie-desktop
     obsidian
-    xarchiver
     yandex-disk
     arandr
     feh
     spotify
     thefuck
-   # discord
+    #discord
     lazygit
     evince
     dive # look into docker image layers
     # podman-tui # status of containers in the terminal
     podman-compose # start group of containers for dev
     hakuneko
-    protonvpn-gui
+    ##  protonvpn-gui
     racket
     postman
-   #  evolution
-   #  evolution-ews
-
+#    evolution
+#     evolution-ews
+#    wireguard
     wireguard-tools
-    xfce.xfce4-screenshooter
-    xfce.thunar
-    thunderbird
     twmn
     nerdfonts
     aws-workspaces
     qbittorrent
-    discord
-    mitmproxy
+    inkscape
+    vlc
+    unstable.amnezia-vpn
+    jdk8
+    tuxguitar
 ];
+
 
 
   # basic configuration of git, please change to your own
@@ -162,6 +155,7 @@ in {
     # userName = "easlebedev";
     # userEmail = "xiaoyin_c@qq.com";
   };
+
 
   # starship - an customizable prompt for any shell
   programs.starship = {
@@ -188,7 +182,7 @@ in {
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      window.opacity = 0.9;
+      window.opacity = 0.6;
     };
   };
     
@@ -205,8 +199,6 @@ in {
           r = "ranger";
           # kvantera = secured.shellAliases.kvantera;
           avi = "NVIM_APPNAME=astronvim nvim";
-          kvantera = secured.aliases.kvantera;
-
         }
         # secured.shellAliases
      ];
@@ -232,7 +224,6 @@ in {
        r = "ranger";
        urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
        urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
-       kvantera = secured.aliases.kvantera;
        
     };
    };
