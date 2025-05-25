@@ -21,7 +21,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.honey = import ./home.nix;
+            home-manager.users.honey = import ./home/desktop-pc.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
           ];

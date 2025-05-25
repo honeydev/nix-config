@@ -29,6 +29,7 @@ import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.ZoomRow
+import XMonad.Util.Hacks (fixSteamFlicker)
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
@@ -84,8 +85,9 @@ myWorkspaces = ["1: terms","2: web","3: code","4: messenger", "5: systools"] ++ 
 --
 myManageHook = composeAll
     [
-      className =? "Google-chrome"                --> doShift "2:web"
-    , className =? "Brave-bin"                    --> doShift "2:web"
+      className =? "firefox"                      --> doShift "2: web"
+    ,  className =? "Google-chrome"                --> doShift "2: web"
+    , className =? "Brave-bin"                    --> doShift "2: web"
     , resource  =? "desktop_window"               --> doIgnore
     , className =? "Galculator"                   --> doCenterFloat
     , className =? "Steam"                        --> doCenterFloat
@@ -484,7 +486,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- By default, do nothing.
 myStartupHook = do
   setWMName "LG3D"
-  spawn     "feh --bg-fill  /home/honey/Pictures/wallhaven-r2pq31.jpg"
+  spawn     "feh --bg-fill  /home/honey/nix-config/xmonad/photo_2022-07-02_04-25-02.jpg"
   spawn "deadd-notification-center"
   spawn "xinput disable 9"
   -- spawn "twmnd"
@@ -495,7 +497,7 @@ myStartupHook = do
 -- Run xmonad with all the defaults we set up.
 --
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc.hs"
+  xmproc <- spawnPipe "xmobar /home/honey/nix-config/xmonad/xmobarrc.hs"
   -- xmproc <- spawnPipe "taffybar"
   xmonad $ docks
          $ withNavigation2DConfig myNav2DConf
@@ -543,7 +545,7 @@ defaults = def {
     -- hooks, layouts
     layoutHook         = myLayout,
     -- handleEventHook    = E.fullscreenEventHook,
-    handleEventHook    = fullscreenEventHook,
+    handleEventHook    = fixSteamFlicker <+> fullscreenEventHook,
     manageHook         = manageDocks <+> myManageHook,
     startupHook        = myStartupHook
 }

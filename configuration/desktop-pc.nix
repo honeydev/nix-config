@@ -16,10 +16,14 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   hardware.graphics.enable = true;
+  services.resolved.enable = true;
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
      
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
+# Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
@@ -54,15 +58,41 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
+
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  #services.displayManager.sddm.enable = true;
+  #services.desktopManager.plasma6.enable = true;
+#  services.xserver = {
+#    desktopManager = {
+#      xterm.enable = false;
+#      xfce.enable = true;
+#    };
+#  };
+#  services.displayManager.defaultSession = "xfce";
+  services.picom.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  services.xserver = {
+    layout = "us,ru";
+    xkbVariant = "";
+    xkbOptions = "grp:alt_shift_toggle";
+
+  dpi = 96;
+  windowManager.xmonad = {
+     enable = true;
+     enableContribAndExtras = true;
+     extraPackages = hpkgs: [
+       hpkgs.xmonad-contrib_0_18_1
+       hpkgs.dbus
+       hpkgs.monad-logger
+      # hpkgs.xmonad-screenshot
+     ];
+     config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
   };
+
+
+  };
+
 
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
@@ -97,7 +127,7 @@
   users.users.honey = {
     isNormalUser = true;
     description = "honey";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -116,6 +146,14 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
+  programs.thunar.enable = true;
+
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
+
+  virtualisation.docker.enable = true;
 
 
   # List packages installed in system profile. To search, run:

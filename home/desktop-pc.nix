@@ -102,16 +102,19 @@ in {
     gnumake
     ranger
     htop
+    xmobar
+    rofi
+    j4-dmenu-desktop
     # neovim
     xclip
     telegram-desktop
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
-    # jetbrains.idea-ultimate
-    # jetbrains.rust-rover
+    jetbrains.idea-ultimate
+    jetbrains.rust-rover
     mattermost-desktop
-    #citrix_workspace
+    citrix_workspace
     firefox
     simplescreenrecorder
     openconnect
@@ -122,7 +125,7 @@ in {
     feh
     spotify
     thefuck
-    #discord
+    discord
     lazygit
     evince
     dive # look into docker image layers
@@ -145,6 +148,12 @@ in {
     unstable.amnezia-vpn
     jdk8
     tuxguitar
+    deadd-notification-center
+    xmobar
+    xarchiver
+    xfce.xfce4-screenshooter
+    pgadmin4-desktopmode
+    pulsemixer
 ];
 
 
@@ -182,7 +191,7 @@ in {
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
-      window.opacity = 0.6;
+      window.opacity = 0.9;
     };
   };
     
@@ -197,6 +206,7 @@ in {
           ll = "ls -l";
           update = "sudo nixos-rebuild switch";
           r = "ranger";
+          n = "steam-run nvim";
           # kvantera = secured.shellAliases.kvantera;
           avi = "NVIM_APPNAME=astronvim nvim";
         }
@@ -222,6 +232,7 @@ in {
      shellAliases = {
        k = "kubectl";
        r = "ranger";
+       n = "steam-run nvim";
        urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
        urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
        

@@ -111,8 +111,8 @@ in {
     # tmux
     jetbrains.idea-community
     jetbrains.pycharm-community
-    # jetbrains.idea-ultimate
-    # jetbrains.rust-rover
+    jetbrains.idea-ultimate
+    jetbrains.rust-rover
     mattermost-desktop
     #citrix_workspace
     firefox
