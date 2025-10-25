@@ -28,6 +28,23 @@
     };
 
 
+    nixosConfigurations.t14g5 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+      	./configuration/t14g5.nix
+	 home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.honey = import ./home/t14g5.nix;
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+          ];
+    };
+
+
+
+
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
@@ -41,6 +58,8 @@
           }
           ];
     };
+
+
 
     nixosConfigurations.t480skde = nixpkgs.lib.nixosSystem {
        system = "x86_64-linux";

@@ -115,7 +115,7 @@ in {
     jetbrains.rust-rover
     mattermost-desktop
     #citrix_workspace
-    firefox
+    firefox-bin
     simplescreenrecorder
     openconnect
     keepassxc

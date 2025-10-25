@@ -262,6 +262,7 @@ services.redshift = {
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
+    nerdfonts
 ];
 
 programs.steam = {
