@@ -24,25 +24,37 @@
             home-manager.users.honey = import ./home/desktop-pc.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
-          ];
+        ];
     };
 
 
-    nixosConfigurations.t14g5 = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.t14g5-gnome = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
-      	./configuration/t14g5.nix
+      	./configuration/t14g5-gnome.nix
 	 home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.honey = import ./home/t14g5.nix;
+            home-manager.users.honey = import ./home/t14g5-gnome.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
-          ];
+        ];
     };
 
-
+    nixosConfigurations.t14g5-xmonad = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+      	./configuration/t14g5-xmonad.nix
+	 home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.honey = import ./home/t14g5-xmonad.nix;
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+        ];
+    };
 
 
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {

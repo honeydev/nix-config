@@ -37,20 +37,13 @@
     LC_PAPER = "ru_RU.UTF-8";
     LC_TELEPHONE = "ru_RU.UTF-8";
     LC_TIME = "ru_RU.UTF-8"; };
-   programs.hyprland = {
-     enable = true;
-     # set the flake package
-     xwayland.enable = true;
-   };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.dpi = 96;
   #
-  #  # Enable the GNOME Desktop Environment.
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
-  #
+  services.xserver.displayManager = {
+      lightdm.enable = true;
+  };
 
   services.xserver.windowManager.xmonad = {
      enable = true;
@@ -59,16 +52,16 @@
        hpkgs.xmonad-contrib
        hpkgs.dbus
        hpkgs.monad-logger
-      # hpkgs.xmonad-screenshot
+#       hpkgs.xmonad-screenshot
      ];
      config = builtins.readFile /home/honey/nix-config/xmonad/xmonad.hs;
   };
 
   #  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us,ru";
-    variant = "";
-    options = "grp:alt_shift:toggle";
+  services.xserver = {
+    xkb.layout = "us,ru";
+    xkbVariant = "";
+    xkbOptions = "grp:alt_shift_toggle";
   };
 
   xdg.portal = {
@@ -77,7 +70,6 @@
 
   networking.extraHosts =
   ''
-  172.16.248.88 dmp-a2p-mms-front-vm-staging-a2p.kvantera.io
   '';
   
   services.blueman.enable = true;
@@ -124,6 +116,12 @@
 
   # Install firefox.
 #  programs.firefox.enable = true;
+  programs.thunar.enable = true;
+  services.tumbler.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -201,6 +199,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
 }
 
