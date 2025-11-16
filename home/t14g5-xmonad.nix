@@ -128,7 +128,7 @@ in {
     amnezia-vpn
     jdk8
     tuxguitar
-#    deadd-notification-center
+    dunst
     xmobar
     xarchiver
     xfce.xfce4-screenshooter
